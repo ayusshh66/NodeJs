@@ -1,7 +1,15 @@
 const http = require("http")
 
 
-const server = http.createServer();
+const server = http.createServer((req,res) => {
+    console.log("i got an incoming request");
+    res.writeHead(200,{'Content-Type' : 'application/json' })
+    
+
+
+});
+
+
 
 server.listen(8000, () => {
     console.log(`http server is up and running in port number 8000 `);
