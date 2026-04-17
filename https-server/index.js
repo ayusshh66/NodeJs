@@ -3,7 +3,8 @@ const http = require("http")
 
 const server = http.createServer((req,res) => {
     console.log("i got an incoming request");
-    res.writeHead(200,{'Content-Type' : 'application/json' })
+    res.writeHead(200);
+    res.end('thanks for visiting')
     
 
 
