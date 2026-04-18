@@ -8,6 +8,14 @@
   "main": "01Node.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node 01Node.js"
-  }
+     "start": "node --watch ./https-server/08http.js"  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ayusshh66/NodeJs.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/ayusshh66/NodeJs/issues"
+  },
+  "homepage": "https://github.com/ayusshh66/NodeJs#readme"
 }
