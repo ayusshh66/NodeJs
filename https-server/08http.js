@@ -5,7 +5,18 @@ const server = http.createServer((req, res) => {
   console.log(req.method);
 
   res.writeHead(200);
-  res.end(`youu can accept ${req.headers['accept-language']}`);
+//   res.end(`youu can accept ${req.headers['accept-language']}`);
+
+  switch(req.url){
+    case '/':
+        return res.end("you are at home page");
+    case '/contact':
+        return res.end("you are at contact page")
+
+    default:
+        res.writeHead(404)
+        return res.end("the end")
+  }
 });
 
 server.listen(5000, () => {
