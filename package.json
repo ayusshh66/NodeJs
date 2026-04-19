@@ -8,7 +8,8 @@
   "main": "01Node.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-     "start": "node --watch ./https-server/08http.js"  },
+    "start": "node --watch ./https-server/08http.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ayusshh66/NodeJs.git"
@@ -17,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/ayusshh66/NodeJs/issues"
   },
-  "homepage": "https://github.com/ayusshh66/NodeJs#readme"
+  "homepage": "https://github.com/ayusshh66/NodeJs#readme",
+  "dependencies": {
+    "@types/node": "^25.6.0"
+  }
 }
