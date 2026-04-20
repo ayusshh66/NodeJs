@@ -31,8 +31,17 @@ const books = [{
 }]
 
 
+// MIDDLEWARE (PLUGINS)
+app.use(express.json());
+
+
+
+
+// ROUTES
 app.get('/books',(req,res) => {
-    return res.status(400).json(books)
+    console.log(app.body);
+    
+    return res.status(200).json(books)
 })
 
 app.get('/books/:id', (req,res) => {
@@ -49,6 +58,14 @@ app.get('/books/:id', (req,res) => {
 
     return res.json(book);
 })
+
+app.post('/books', (req,res) => {
+    console.log(req.header);
+    console.log(req.body);
+    return res.json({message :  `this route is in under developement`})
+    
+
+});
 
 
 app.listen(PORT, () => {
