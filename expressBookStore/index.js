@@ -39,7 +39,7 @@ app.use(express.json());
 
 // ROUTES
 app.get('/books',(req,res) => {
-    console.log(app.body);
+    // console.log(app.body);
     
     return res.status(200).json(books)
 })
@@ -48,7 +48,7 @@ app.get('/books/:id', (req,res) => {
     const bookId = Number(req.params.id); // we need to state it as number else it will give bug, cuz .params gives value as a string
     const book = books.find((e) => e.id === bookId); // THIS WILL GIVE THE VALUE THAT IS BEEN SATISFIEND DUE TO FUNCTION
     
-    if(isNaN(bookId)) {return res.json({error : `the id should only be a number`})} 
+    if(isNaN(bookId)) {return res.status(400).json({error : `the id should only be a number`})} 
     
     if(!book){
         return res.status(404)
@@ -60,9 +60,26 @@ app.get('/books/:id', (req,res) => {
 })
 
 app.post('/books', (req,res) => {
-    console.log(req.header);
-    console.log(req.body);
-    return res.json({message :  `this route is in under developement`})
+    // console.log(req.headers);
+    // console.log(req.body);
+
+    const {title , author} = req.body;
+
+    if(!title || title === ""){
+        return res.status(400).json({error : "title is reqyuired in this field"})
+    }
+
+    if(!author || author === ""){
+        return res.status(400).json({error : "author is required in this field"})
+    }
+
+    const id = books.length+1;
+    const book = {id,title,author}
+
+    books.push(book);
+
+
+    return res.status(201).json({message :  `the book has been created successfully `, id : `${id}`})
     
 
 });
