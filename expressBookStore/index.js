@@ -84,6 +84,17 @@ app.post('/books', (req,res) => {
 
 });
 
+app.delete('/books/:id', (req,res) => {
+    const id = Number(req.params.id);
+    if(isNaN(id)) res.status(400).json({message : "the id should be in Number"})
+
+    const deleteBook = books.findIndex((e) => e.id === id);
+
+    books.splice(deleteBook,1)
+
+    res.status(200).json({message : "the book has been deleted"})
+
+})
 
 app.listen(PORT, () => {
     console.log(`the server is running on port : ${PORT}`);
