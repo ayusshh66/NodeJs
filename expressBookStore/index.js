@@ -1,5 +1,6 @@
 const { log } = require("console");
 const express = require("express")
+const fs = require("node:fs");
 
 const app = express();
 const PORT = 8000;
@@ -31,9 +32,15 @@ const books = [{
 }]
 
 
-// MIDDLEWARE (PLUGINS)
+// MIDDLEWARE (PLUGINS) number 1
 app.use(express.json());
 
+//Middleware 2
+app.use((req,res,next) => {
+    const log = `[${Date.now()}] ${req.method}  ${req.path}`
+        fs.appendFileSync('activity.txt', log , "utf-8");
+        next();
+})
 
 
 
