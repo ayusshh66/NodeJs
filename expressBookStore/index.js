@@ -20,3 +20,8 @@ app.use(loggermiddleware)
 
 // ROUTES
 app.use('/books', bookRouter )
+
+app.listen(PORT, () => {
+    console.log(`the server is running on port : ${PORT}`);
+    
+})

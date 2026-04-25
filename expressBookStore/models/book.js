@@ -1,7 +1,3 @@
-
-
-
-
 exports.books = [{
     id : 1,
     title :"game of thrones",

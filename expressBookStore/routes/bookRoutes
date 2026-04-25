@@ -1,68 +1,17 @@
 const express = require("express");
-const {books} = require("../db/book")
+const {books} = require("../models/book")
 const router = express.Router();
-
-router.get('/books',(req,res) => {
-    // console.log(app.body);
-    
-    return res.status(200).json(books)
-})
-
-router.get('/:id', (req,res) => {
-    const bookId = Number(req.params.id); // we need to state it as number else it will give bug, cuz .params gives value as a string
-    const book = books.find((e) => e.id === bookId); // THIS WILL GIVE THE VALUE THAT IS BEEN SATISFIEND DUE TO FUNCTION
-    
-    if(isNaN(bookId)) {return res.status(400).json({error : `the id should only be a number`})} 
-    
-    if(!book){
-        return res.status(404)
-        .json({error : `the book is not there with id number ${bookId}`})
-    }
-    
-
-    return res.json(book);
-})
-
-router.post('/', (req,res) => {
-    // console.log(req.headers);
-    // console.log(req.body);
-
-    const {title , author} = req.body;
-
-    if(!title || title === ""){
-        return res.status(400).json({error : "title is reqyuired in this field"})
-    }
-
-    if(!author || author === ""){
-        return res.status(400).json({error : "author is required in this field"})
-    }
-
-    const id = books.length+1;
-    const book = {id,title,author}
-
-    books.push(book);
+const PORT = 8000;
+const controller = require("../controllers/book.controller")
 
 
-    return res.status(201).json({message :  `the book has been created successfully `, id : `${id}`})
-    
+router.get('/',controller.getBooks)
 
-});
+router.get('/:id', controller.getBookById)
 
-router.delete('/:id', (req,res) => {
-    const id = Number(req.params.id);
-    if(isNaN(id)) res.status(400).json({message : "the id should be in Number"})
+router.post('/',controller.postBook);
 
-    const deleteBook = books.findIndex((e) => e.id === id);
+router.delete('/:id', controller.deleteBooks)
 
-    books.splice(deleteBook,1)
-
-    res.status(200).json({message : "the book has been deleted"})
-
-})
-
-router.listen(PORT, () => {
-    console.log(`the server is running on port : ${PORT}`);
-    
-})
 
 module.exports = router;
