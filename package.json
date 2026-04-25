@@ -1,7 +1,16 @@
 {
-  "name": "nodejs",
+  "name": "orm1",
   "version": "1.0.0",
   "description": "learning",
+  "keywords": [],
+  "homepage": "https://github.com/ayusshh66/NodeJs#readme",
+  "bugs": {
+    "url": "https://github.com/ayusshh66/NodeJs/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ayusshh66/NodeJs.git"
+  },
   "license": "ISC",
   "author": "",
   "type": "commonjs",
@@ -10,16 +19,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node --watch ./https-server/08http.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ayusshh66/NodeJs.git"
-  },
-  "keywords": [],
-  "bugs": {
-    "url": "https://github.com/ayusshh66/NodeJs/issues"
-  },
-  "homepage": "https://github.com/ayusshh66/NodeJs#readme",
   "dependencies": {
-    "@types/node": "^25.6.0"
+    "@types/node": "^25.6.0",
+    "drizzle-kit": "^0.31.10"
   }
 }
