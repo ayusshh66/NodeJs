@@ -3,6 +3,7 @@ const express = require("express")
 const fs = require("node:fs");
 const bookRouter = require("./routes/bookRoutes");
 const { loggermiddleware } = require("./middleware/logger");
+require("dotenv/config");
 
 const app = express();
 const PORT = 8000;
