@@ -1,7 +1,7 @@
 const { log } = require("console");
 const express = require("express")
 const fs = require("node:fs");
-const bookRouter = require("./routes/bookRoutes");
+const bookRouter = require("./routes/bookRoutes.js");
 const { loggermiddleware } = require("./middleware/logger");
 require("dotenv/config");
 

@@ -1,5 +1,5 @@
-const {books} = require("../models/book")
-
+const {books} = require("../models/books.model")
+const db = require("../db")
 
 
 exports.getBookById = function (req,res) {
