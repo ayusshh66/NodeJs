@@ -1,14 +1,10 @@
-const {pgTable, uuid, varchar, text} = require("drizzle-orm/pg-core");
-const aurthorTable = require("./author.model");
-const authorTable = require("./author.model");
+const { pgTable, uuid, varchar, text } = require("drizzle-orm/pg-core");
+const { authorTable } = require("./author.model");
 
-const booksTable = pgTable('books',{
-    id : uuid().primaryKey().defaultRandom(),
-    title : varchar({length : 100}).notNull(),
-    description : text(),
-    authorId : uuid().references(() => authorTable.id).notNull()
-})
+const booksTable = pgTable("books", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  title: varchar("title", { length: 100 }).notNull(),
+  description: text("description"),
+  authorId: uuid("author_id").references(() => authorTable.id),});
 
-module.exports = booksTable;
-
-
+module.exports = { booksTable };

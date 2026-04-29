@@ -1,4 +1,4 @@
-const {pgTable, uuid, varchar, text} = require("drizzle-orm/pg-core");
+const {pgTable, uuid, varchar} = require("drizzle-orm/pg-core");
 
 const authorTable = pgTable('authors',{
     id : uuid().primaryKey().defaultRandom(),
@@ -8,4 +8,4 @@ const authorTable = pgTable('authors',{
 
 })
 
-module.exports = authorTable;
+module.exports = {authorTable};

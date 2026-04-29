@@ -1,6 +1,6 @@
 // const {books} = require("../models/books.model")
 const db = require('../db');
-const booksTable = require("../models/books.model");
+const {booksTable} = require("../models/books.model");
 const {eq} = require("drizzle-orm") // eq stands for equal
 
 
@@ -8,7 +8,7 @@ exports.getBookById = async function (req,res) {
     // const bookId = Number(req.params.id); // we need to state it as number else it will give bug, cuz .params gives value as a string
     const bookId = req.params.id;
     // const book = books.find((e) => e.id === bookId); // THIS WILL GIVE THE VALUE THAT IS BEEN SATISFIEND DUE TO FUNCTION
-    const [book] = await db.select().from(booksTable).where(table => eq(table.id, bookId)).limit(1); // table refers to the booksTable
+    const [book] = await db.select().from(booksTable).where(eq(booksTable.id,bookId)).limit(1); // table refers to the booksTable
     // “Take the first item from the array and store it in book” ==> logic for [book]
     
     // if(isNaN(bookId)) {return res.status(400).json({error : `the id should only be a number`})} 
@@ -22,13 +22,27 @@ exports.getBookById = async function (req,res) {
     return res.json(book);
 }
 
-exports.getBooks = async (req,res) => {
-    // console.log(app.body);
+// exports.getBooks = async (req,res) => {
+//     // console.log(app.body);
     
-    // return res.status(200).json(books)
-    const books = await db.select().from(booksTable)
-    return res.json(books)
-}
+//     // return res.status(200).json(books)
+//     const books = await db.select().from(booksTable)
+//     return res.json(books)
+// }
+
+    exports.getBooks = async (req, res) => {
+  try {
+    const books = await db.select().from(booksTable);
+    return res.json(books);
+  } catch (err) {
+    console.log("REAL ERROR:", err.cause);
+    return res.status(500).json({
+      message: err.message,
+      realError: err.cause?.message,
+      code: err.cause?.code,
+    });
+  }
+};
 
 exports.postBook = async (req,res) => {
     // console.log(req.headers);
