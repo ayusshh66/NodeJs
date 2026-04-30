@@ -1,5 +1,6 @@
 // const {books} = require("../models/books.model")
 // const { log } = require('console');
+const {sql} = require('drizzle-orm')
 const db = require('../db');
 const {booksTable} = require("../models/books.model");
 const {eq, ilike} = require("drizzle-orm") // eq stands for equal
@@ -36,7 +37,9 @@ exports.getBookById = async function (req,res) {
     const search = req.query.search; // gets the book by searching 
     console.log({search});
     if(search){
-      const books =  await db.select().from(booksTable).where(ilike(booksTable.title, `%${search}%`)) // % means ignoring the case sensitivity in searching like NODE = node
+      const books =  await db.select().from(booksTable)
+    //   .where(ilike(booksTable.title, `%${search}%`)) // % means ignoring the case sensitivity in searching like NODE = node
+         .where(sql`${booksTable.title} @@ to_tsquery('english', ${search})`);  // more optimized method i.e indexing
       return res.json(books)
     }
 
