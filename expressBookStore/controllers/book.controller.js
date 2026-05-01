@@ -3,6 +3,7 @@
 const {sql} = require('drizzle-orm')
 const db = require('../db');
 const {booksTable} = require("../models/books.model");
+const {authorTable} = require("../models/author.model");
 const {eq, ilike} = require("drizzle-orm") // eq stands for equal
 
 
@@ -10,7 +11,7 @@ exports.getBookById = async function (req,res) {
     // const bookId = Number(req.params.id); // we need to state it as number else it will give bug, cuz .params gives value as a string
     const bookId = req.params.id;
     // const book = books.find((e) => e.id === bookId); // THIS WILL GIVE THE VALUE THAT IS BEEN SATISFIEND DUE TO FUNCTION
-    const [book] = await db.select().from(booksTable).where(eq(booksTable.id,bookId)).limit(1); // table refers to the booksTable
+    const [book] = await db.select().from(booksTable).where(eq(booksTable.id,bookId)).leftJoin(eq(booksTable.authorId,authorTable.id)).limit(1); // table refers to the booksTable
     // “Take the first item from the array and store it in book” ==> logic for [book]
     
     // if(isNaN(bookId)) {return res.status(400).json({error : `the id should only be a number`})} 

@@ -1,6 +1,7 @@
 const { eq } = require('drizzle-orm')
 const db = require('../db')
 const {authorTable} = require('../models/author.model')
+const {booksTable} = require('../models/books.model')
 
 
 const getAuthor = async (req,res) => {
@@ -22,7 +23,7 @@ const getAuthorById = async (req,res) => {
 }
 
 const postAuthor = async (req, res) => {
-  const { firstName, lastName, email } = req.body;
+  const { fristName, lastName, email } = req.body;
 
   const [post] = await db
     .insert(authorTable)
@@ -32,11 +33,17 @@ const postAuthor = async (req, res) => {
   return res.json({ message: `author has been created with id: ${post.id}` });
 };
 
+const getBookByAuthorId = async (req,res) => {
+    const id = req.params.id;
+    const get = await db.select().from(booksTable).where(eq(booksTable.authorId,id));
+    return res.json(get)
+}
 
 module.exports = {
     getAuthor,
     getAuthorById,
-    postAuthor
+    postAuthor,
+    getBookByAuthorId,
 }
 
 
