@@ -1,6 +1,7 @@
 const { log } = require("console");
 const express = require("express")
 const fs = require("node:fs");
+const authorRouter = require('./routes/authorRoutes.js');
 const bookRouter = require("./routes/bookRoutes.js");
 const { loggermiddleware } = require("./middleware/logger");
 require("dotenv/config");
@@ -21,6 +22,7 @@ app.use(loggermiddleware)
 
 // ROUTES
 app.use('/books', bookRouter )
+app.use('/authors', authorRouter)
 
 app.listen(PORT, () => {
     console.log(`the server is running on port : ${PORT}`);
