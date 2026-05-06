@@ -5,23 +5,98 @@ import db from './db/index.js'
 import {usersTable, userSession} from './db/schema.js'
 import { eq } from "drizzle-orm";
 import { randomBytes, createHmac } from "node:crypto";
+import jwt from 'jsonwebtoken'
+// import { useTransition } from "react";
 // import { stat } from "node:fs";
 
 app.use(express.json());
 
+
+// it is a global middleware, here the req.user is a global valriable and can be used in other methods
+app.use( async (req,res, next) => {
+    
+    try{
+        // const sessionId = req.headers["session-id"];
+    const tokenHeader = req.headers['authorization'];
+
+    if(!tokenHeader){
+        return  next();
+    }
+
+    if(!tokenHeader.startsWith('Bearer')){
+        return res.status(400).json({error : `token must start with "Bearer"`})
+    }
+
+    const token = tokenHeader.split(' ')[1];
+
+    const decode = jwt.verify(token, process.env.JWT_SECRET)
+
+
+    // console.log("1. sessionId from header:", sessionId)
+    //  if(!sessionId){
+    //     return next();
+    //  }
+
+    // const [data] = await db.select({
+    //     sessionId : userSession.id,
+    //     id : usersTable.id,
+    //     email : usersTable.email,
+    //     name : usersTable.name,
+    // }).from(userSession).rightJoin(usersTable, eq(usersTable.id, userSession.userId)).where(eq(userSession.id,sessionId));
+    // console.log("data:", data)
+
+    
+
+    //  if(!data || !data.id){
+    //     console.log("3. FAILED - no data or no id")
+    //     return next();
+    //  }
+
+     req.user = decode;
+     console.log("4. SUCCESS - req.user set")
+     next();
+    }catch(err){
+        next();
+    }
+})
+
+app.patch('/', async(req,res) =>{
+const user = req.user
+    
+
+    if(!user) {
+        return res.status(400).json({message : `you are not logged in`})
+    }
+
+    const {name} = req.body;
+    console.log(name)
+    await db.update(usersTable).set({name}).where(eq(usersTable.id, user.id))
+
+    return res.json({status : "success"})
+
+})
+
+
+
 app.get('/', async(req,res) => {
-    const sessionId = req.header[`session-id`];
-    if(!sessionId) res.status(401).json({message : `you are not logged in`});
 
-    const [data] = await db.select({id : userSession.id,
-        userId : usersTable.id,
-        email : usersTable.email,
-        name : usersTable.name,
-    }).from(userSession).rightJoin(usersTable, eq(usersTable.id, userSession.userId)).where(eq(userSession.id,sessionId));
+    const user = req.user;
+    // const sessionId = req.headers["session-id"];
+    // console.log("data:", user); 
+    if(!user) return res.status(401).json({message : `you are not logged in`});
 
-    if(!data) return res.status(401).json({message : `you are not logged in`});
+    // const [data] = await db.select({id : userSession.id,
+    //     sessionId : userSession.id,
+    //     id : usersTable.id,
+    //     email : usersTable.email,
+    //     name : usersTable.name,
+    // }).from(userSession).rightJoin(usersTable, eq(usersTable.id, userSession.userId)).where(eq(userSession.id,sessionId));
+    // console.log("sessionId:", sessionId);  // add this
+    // console.log("data:", data);  
 
-    res.json({ data })
+    // if(!data || !data.userId) return res.status(401).json({message : `you are not logged in`});
+
+    res.json({ user })
 
 })
 
@@ -59,11 +134,19 @@ app.post('/login', async(req,res) => {
 
     if(newHash !== existingHash) return res.status(400).json({message : `incorrect password`});
 
-    const session = await db.insert(userSession).values({
-        userId : existingUser.id,
+    // const [session] = await db.insert(userSession).values({
+    //     userId : existingUser.id,
 
-    }).returning({id : userSession.id})
-    return res.json({status : `success`, sessionId : session.id})
+    // }).returning({id : userSession.id})
+
+    const payload = {
+        id : existingUser.id,
+        email : existingUser.email,
+        name : existingUser.name,
+    }
+    const token = jwt.sign(payload, process.env.JWT_SECRET)
+
+    return res.json({status : `success`, token})
     
     
 })
