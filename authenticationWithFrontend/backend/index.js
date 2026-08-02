@@ -9,9 +9,8 @@ app.use(cors({
     origin : 'http://localhost:5173',
     credentials : true,
 }))
+
 app.use(express.json())
-
-
 
 app.get('/', (req,res) => {
     res.status(200).end(`everything is fine`)
@@ -22,3 +21,4 @@ app.use('/user', userRouter)
 app.listen(PORT, () => {
     console.log(`server is up and running at ${PORT}`)
 })
+

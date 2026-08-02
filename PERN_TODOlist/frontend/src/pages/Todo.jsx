@@ -241,9 +241,9 @@ function Todo({ user }) {
                             key={todo.id}
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
-                            // ✨ Exit slide right + fade
+                            // Exit slide right + fade
                             exit={{ opacity: 0, x: 60, scale: 0.85, transition: { duration: 0.25 } }}
-                            // ✨ Stagger each item by index
+                            // Stagger each item by index
                             transition={{ duration: 0.25, delay: index * 0.05 }}
                             className='flex flex-col gap-8'
                           >

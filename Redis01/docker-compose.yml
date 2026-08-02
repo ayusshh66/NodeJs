@@ -1,0 +1,26 @@
+services:
+
+  redis:
+    image: redis:latest
+    container_name: redis_practice
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis_data:/data
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres_practice
+    environment:
+      POSTGRES_USER: ayush
+      POSTGRES_PASSWORD: hemdaniayush
+      POSTGRES_DB: redis_practice
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    
+volumes:
+  redis_data:
+  postgres_data:

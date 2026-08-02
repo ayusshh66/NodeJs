@@ -19,13 +19,13 @@ function SignUpPage({setUser}) {
 
     const handleSubmit = async (e) =>{
         e.preventDefault();
-         if (!form.email || !form.password) {  // 👈 add this
+         if (!form.email || !form.password) {  
         setError('please fill all fields')
         return
             }
         try {
             const res = await axios.post('http://localhost:8000/user/signup', form)
-console.log('signup response:', res.data)  // 👈 add this
+console.log('signup response:', res.data)  
 
             localStorage.setItem('token', res.data.data.token) 
 
