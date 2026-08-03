@@ -41,6 +41,13 @@ app.delete("/banner", async(req:Request , res : Response) => {
 
 })
 
+app.get("/banner/exists", async(req: Request, res: Response) => {
+
+    const banner = await redis.exists(BANNER_KEY);
+    res.json({status : "success", exists : Boolean(banner)})
+
+})
+
 
 app.listen(PORT, () => {
     console.log(`the server is up and running! at port : ${PORT}`)
