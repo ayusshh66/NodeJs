@@ -25,7 +25,24 @@ app.post("/otp", async( req:Request , res: Response) =>{
 
 })
 
+app.post("/otp/verification", async(req:Request, res : Response) => {
 
+    const {phone, otp} = req.body;
+    const savedOtp = await redis.get(otpKey(phone));
+
+    if(!savedOtp){
+        return res.json({status : "failed", message : "otp expired"})
+    }
+
+    if(savedOtp !== otp){
+        return res.json({status : "failed", error : "otp is wrong"})
+    }
+
+    await redis.del(otpKey(phone));
+
+    res.json({status : "success", message : "otp verified and deleted now"})
+
+})
 
 app.listen(PORT, () => {
 
