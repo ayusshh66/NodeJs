@@ -10,8 +10,6 @@ const redis = new Redis(process.env.REDIS_URL || "redis://localhost:6379");
 
 const BANNER_KEY = "app:banner"
 
-
-
 app.get("/redis", async(req : Request,res : Response) => {
     const reply = await redis.ping();
     res.json({redis : reply})
