@@ -38,6 +38,15 @@ app.post("/user/:id/hash", async(req:Request, res:Response) => {
 
 })
 
+app.get("/user/:id/hash", async(req:Request, res:Response) => {
+
+    const id = req.params.id;
+
+    const data = await redis.hgetall(`user:${id}`);
+
+    return res.json({status : "success", user : data && data})
+
+})
 
 
 
