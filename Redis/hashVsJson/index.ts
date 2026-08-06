@@ -28,6 +28,16 @@ app.get("/user/:id/json", async(req:Request, res:Response) => {
 
 })
 
+app.post("/user/:id/hash", async(req:Request, res:Response) => {
+
+    const id = req.params.id;
+
+    const data = await redis.hset(`user:${id}`, req.body);
+
+    return res.json({status : "success",data })
+
+})
+
 
 
 
