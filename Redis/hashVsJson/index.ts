@@ -1,5 +1,6 @@
 import express, {Request, Response} from "express";
 import Redis from "ioredis";
+import { json } from "node:stream/consumers";
 
 const app = express();
 app.use(express.json());
@@ -11,11 +12,24 @@ app.post("/user/:id/json", async(req:Request, res: Response) => {
 
     const {id} = req.params;
 
-    const data = await redis.set(`user:${id}`, req.body);
+    const data = await redis.set(`user:${id}`, JSON.stringify(req.body));
 
-    return res.json({status : "success", data})
+    return res.json({status : "success", savedAs : "Json"})
 
 })
+
+app.get("/user/:id/json", async(req:Request, res:Response) => {
+
+    const id = req.params.id;
+
+    const data = await redis.get(`user:${id}`);
+
+    return res.json({status : "success", user : data && JSON.parse(data)})
+
+})
+
+
+
 
 app.listen(PORT, () => {
 
