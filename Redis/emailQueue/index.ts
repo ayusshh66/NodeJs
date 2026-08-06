@@ -25,7 +25,19 @@ app.post("/emails", async(req:Request, res: Response) => {
 
 })
 
+app.get("/emails/process-one", async(req:Request, res:Response) => {
 
+    const rawjob = await redis.rpop(QUEUE_KEY);
+
+    if(!rawjob){
+        return res.json({message : "no jobs in queue"})
+    }
+
+    const jobs = JSON.parse(rawjob);
+
+    return res.json({status : "success", email : jobs })
+
+})
 
 app.listen(PORT, () => {
 
