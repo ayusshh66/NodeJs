@@ -16,9 +16,7 @@ const worker = new Worker(
 )
 
 worker.on("completed", (job) => {
-
     console.log("job completed",job.id, job.name, job.data)
-
 })
 
 worker.on("failed", (job) => {
