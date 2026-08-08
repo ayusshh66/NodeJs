@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 7000;
 
 app.post("/welcome-email", async(req:Request, res: Response) => {
 
-    const job = emailQueue.add(
+    const job = await  emailQueue.add(
         "send-welcome-email",
         {
             to: req.body.to,
